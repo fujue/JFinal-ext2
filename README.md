@@ -1,5 +1,8 @@
 # JFinal-ext2
 
+#####v2.0.6 更新内容
+1. 修改 Ge 数据库 Model 的 bug;
+
 #####v2.0.5 更新内容
 1. 更新 jfinal 到2.2;
 2. 加入 redis shard plugin;
