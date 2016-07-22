@@ -200,16 +200,16 @@ jfex2有部分特性基于 jfinal-ext，但发现 jfinal-ext 基于JF1.9，很�
 ```shell
 #-----------------------------------------------------------------#
 #  database　Config
-# 1. db.ds: db datasource name, use ',' split. eg :mysql,oracle;
-# 2. db.*.active:ture, use db,* is the ds name;
-# 3. db.*.url: db url,* is the ds name;
-# 4. db.*.user: db username,* is the ds name;
-# 5. db.*.password: db password,* is the ds name, 
+# ->. db.ds: db datasource name, use ',' split. eg :mysql,oracle;
+# ->. db.*.active:ture, use db,* is the ds name;
+# ->. db.*.url: db url,* is the ds name;
+# ->. db.*.user: db username,* is the ds name;
+# ->. db.*.password: db password,* is the ds name, 
 #	use `java -cp druid-xx.jar com.alibaba.druid.filter.config.ConfigTools your_password`
 #	generate your encrypt password;
-# 6. db.*.initsize: db pool init size,* is the ds name;
-# 7. db.*.maxactive: db pool maxactive,* is the ds name;
-# 8. db.showsql: ture, show execute sql;
+# ->. db.*.initsize: db pool init size,* is the ds name;
+# ->. db.*.maxactive: db pool maxactive,* is the ds name;
+# ->. db.showsql: ture, show execute sql;
 #-----------------------------------------------------------------#
 db.ds = mysql //配置数据源,目前主要测试了 mysql,oracle 没有经过测试,使用者自行测试。db.ds 数据格式,比如使用了 mysql和 oracle,那么 db.ds = mysql,oracle。注意使用英文输入下的","。以下说明均以 db.ds = mysql 进行说明;
 db.mysql.active = false //是否激活数据源,命名规范为->db.数据源名称.active,比如 db.mysql.active,db.oracle.active。
@@ -221,23 +221,27 @@ db.mysql.maxactive = 100 //数据库连接池最大激活数,命名规范->db.�
 db.showsql = true //是否显示 sql
 #-----------------------------------------------------------------#
 # Generator Config
-# 1. ge.dict: true, generate the data dict;//是否生成数据词典;
-# 2. ge.base.model.outdir: the basemodel output dir path;//BaseModel 导出目录,可为绝对路径,也可以为相对路径;
-# 3. ge.base.model.package: the basemodel package;//BaseModel的包名;
-# 4. ge.model.outdir: the model output dir path;//Model导出目录,可为绝对路径,也可以为相对路径;
-# 5. ge.model.package: the model package;//Model 的包名;
-#-----------------------------------------------------------------#
+# ->. ge.dict: true, generate the data dict;//是否生成数据词典;
+# ->. ge.model.dao: true, generate the model instance;//是否生成 Model dao 实例;
+# ->. ge.model.table: true, generate the db table's name;//是否生成 table 名;
+# ->. ge.base.model.outdir: the basemodel output dir path;//BaseModel 导出目录,可为绝对路径,也可以为相对路径;
+# ->. ge.base.model.package: the basemodel package;//BaseModel的包名;
+# ->. ge.model.outdir: the model output dir path;//Model导出目录,可为绝对路径,也可以为相对路径;
+# ->. ge.model.package: the model package;//Model 的包名;
+#---------------------------------------------------------------------------------#
 ge.dict=true
+ge.model.dao=true
+ge.model.table=true
 ge.base.model.outdir=
 ge.base.model.package=
 ge.model.outdir=
 ge.model.package=
 #-----------------------------------------------------------------#
 ## App Config
-# 1. app.dev: true, the app is debug mode;
-# 2. app.upload.basedir: upload file save base dir;
-# 3. app.post: ture, use Http Post method;
-# 4. app.name: app's name;
+# ->. app.dev: true, the app is debug mode;
+# ->. app.upload.basedir: upload file save base dir;
+# ->. app.post: ture, use Http Post method;
+# ->. app.name: app's name;
 #-----------------------------------------------------------------#
 app.dev = true
 app.upload.basedir = /var/uploads //上传文件的存储路径,最后的文件路径为:/var/uploads/app.name/xxxx,也就是/var/uploads/app 的名称/xxx。

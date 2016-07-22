@@ -23,7 +23,8 @@ db.showsql = true
 #---------------------------------------------------------------------------------#
 # Generator Config
 # ->. ge.dict: true, generate the data dict;
-# ->. ge.model.dao: true, generate the service dao
+# ->. ge.model.dao: true, generate the model instance;
+# ->. ge.model.table: true, generate the db table's name;
 # ->. ge.base.model.outdir: the basemodel output dir path;
 # ->. ge.base.model.package: the basemodel package;
 # ->. ge.model.outdir: the model output dir path;
@@ -31,6 +32,7 @@ db.showsql = true
 #---------------------------------------------------------------------------------#
 ge.dict=true
 ge.model.dao=true
+ge.model.table=true
 ge.base.model.outdir=
 ge.base.model.package=
 ge.model.outdir=

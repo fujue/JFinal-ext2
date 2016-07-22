@@ -26,11 +26,15 @@ public class ModelGeneratorExt extends ModelGenerator {
 	
 	protected String tableTemplate = "\tpublic static final String table = \"%s\";%n";
 	
-	// generate dao
-	private boolean geDao = true;
+	// generate tablename in model
+	private boolean generateTableNameInModel = true;
 	
-	public void setGeDao(boolean geDao) {
-		this.geDao = geDao;
+	/**
+	 * Generate Table name in Model
+	 * @param generateTableNameInModel
+	 */
+	public void setGenerateTableNameInModel(boolean generateTableNameInModel) {
+		this.generateTableNameInModel = generateTableNameInModel;
 	}
 
 	/**
@@ -44,10 +48,9 @@ public class ModelGeneratorExt extends ModelGenerator {
 
 	@Override
 	protected void genDao(TableMeta tableMeta, StringBuilder ret) {
-		if (!geDao) {
-			return;
-		}
 		super.genDao(tableMeta, ret);
-		ret.append(String.format(tableTemplate, tableMeta.name));
+		if (this.generateTableNameInModel) {
+			ret.append(String.format(tableTemplate, tableMeta.name));
+		}
 	}
 }

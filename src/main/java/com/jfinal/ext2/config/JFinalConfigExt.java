@@ -29,8 +29,8 @@ import com.jfinal.core.Const;
 import com.jfinal.ext.interceptor.POST;
 import com.jfinal.ext.route.AutoBindRoutes;
 import com.jfinal.ext2.handler.ActionExtentionHandler;
-import com.jfinal.ext2.interceptor.OnExceptionInterceptorExt;
 import com.jfinal.ext2.interceptor.NotFoundActionInterceptor;
+import com.jfinal.ext2.interceptor.OnExceptionInterceptorExt;
 import com.jfinal.ext2.kit.PageViewKit;
 import com.jfinal.ext2.plugin.activerecord.generator.ModelGeneratorExt;
 import com.jfinal.ext2.plugin.druid.DruidEncryptPlugin;
@@ -247,7 +247,7 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 	 */
 	private String getAppName() {
 		this.loadPropertyFile();
-		String appName = this.getProperty("app.name");
+		String appName = this.getProperty("app.name","");
 		if (StrKit.isBlank(appName)) {
 			throw new IllegalArgumentException("Please Set Your App Name in Your cfg file");
 		}
@@ -295,8 +295,9 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 		this.loadPropertyFile();
 		String url = this.getProperty(String.format("db.%s.url", ds));
 		url = String.format(URL_TEMPLATE, ds, url);
-		if (!url.endsWith("?characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull")) {
-			url += "?characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull";
+		String endsWith = "?characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull";
+		if (!url.endsWith(endsWith)) {
+			url += endsWith;
 		}
 		DruidEncryptPlugin dp = new DruidEncryptPlugin(url,
 				this.getProperty(String.format(USER_TEMPLATE, ds)),
@@ -312,7 +313,8 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 			dp.start();
 			BaseModelGenerator baseGe = new BaseModelGenerator(this.getBaseModelPackage(), this.getBaseModelOutDir());
 			ModelGeneratorExt modelGe = new ModelGeneratorExt(this.getModelPackage(), this.getBaseModelPackage(), this.getModelOutDir());
-			modelGe.setGeDao(this.getGeDao());
+			modelGe.setGenerateDaoInModel(this.getGeDaoInModel());
+			modelGe.setGenerateTableNameInModel(this.getGeTableNameInModel());
 			Generator ge = new Generator(dp.getDataSource(), baseGe, modelGe);
 			ge.setGenerateDataDictionary(this.getGeDictionary());
 			ge.generate();
@@ -345,11 +347,8 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 		return arp;
 	}
 	
-	private String modelPackage = null;
-	private String modelOutDir = null;
-	private String baseModelPackage = null;
-	private String baseModelOutDir = null;
-	private Boolean geDao = null;
+	private Boolean geDaoInModel = null;
+	private Boolean geTableNameInModel = null;
 	
 	private boolean getGeDictionary() {
 		this.loadPropertyFile();
@@ -358,46 +357,48 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 	
 	private String getBaseModelOutDir() {
 		this.loadPropertyFile();
-		if (this.baseModelOutDir == null) {
-			this.baseModelOutDir = this.getProperty("ge.base.model.outdir");
-		}
-		return this.baseModelOutDir;
+		return this.getProperty("ge.base.model.outdir","");
 	}
 	
 	private String getBaseModelPackage() {
 		this.loadPropertyFile();
-		if (this.baseModelPackage == null) {
-			this.baseModelPackage = this.getProperty("ge.base.model.package");
-		}
-		return this.baseModelPackage;
+		return this.getProperty("ge.base.model.package","");
 	}
 	
-	private boolean getGeDao() {
+	private boolean getGeDaoInModel() {
 		this.loadPropertyFile();
-		if (this.geDao == null) {
-			this.geDao = this.getPropertyToBoolean("ge.model.dao", Boolean.TRUE);
+		if (this.geDaoInModel == null) {
+			this.geDaoInModel = this.getPropertyToBoolean("ge.model.dao", Boolean.TRUE);
 		}
-		return this.geDao.booleanValue();
+		return this.geDaoInModel.booleanValue();
+	}
+	
+	private boolean getGeTableNameInModel() {
+		this.loadPropertyFile();
+		if (this.geTableNameInModel == null) {
+			this.geTableNameInModel = this.getPropertyToBoolean("ge.model.table", Boolean.TRUE);
+		}
+		return this.geTableNameInModel.booleanValue();
 	}
 	
 	private String getModelOutDir() {
 		this.loadPropertyFile();
-		if (this.modelOutDir == null) {
-			this.modelOutDir = this.getProperty("ge.model.outdir");
-		}
-		return this.modelOutDir;
+		return this.getProperty("ge.model.outdir","");
 	}
 	
 	private String getModelPackage() {
 		this.loadPropertyFile();
-		if (this.modelPackage == null) {
-			this.modelPackage =  this.getProperty("ge.model.package");
+		return this.getProperty("ge.model.package");
+	}
+
+	//=========== Override
+	
+	@Override
+	public String getProperty(String key) {
+		String p = super.getProperty(key);
+		if (StrKit.isBlank(p)) {
+			new IllegalArgumentException("`"+key+"` Cannot be empty, set `"+key+"` in cfg.txt file");
 		}
-		
-		if (StrKit.isBlank(this.modelPackage)) {
-			throw new IllegalArgumentException("Please set your model package in cfg.txt file");
-		}
-		
-		return this.modelPackage;
+		return p;
 	}
 }
