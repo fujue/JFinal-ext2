@@ -312,6 +312,7 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 			dp.start();
 			BaseModelGenerator baseGe = new BaseModelGenerator(this.getBaseModelPackage(), this.getBaseModelOutDir());
 			ModelGeneratorExt modelGe = new ModelGeneratorExt(this.getModelPackage(), this.getBaseModelPackage(), this.getModelOutDir());
+			modelGe.setGeDao(this.getGeDao());
 			Generator ge = new Generator(dp.getDataSource(), baseGe, modelGe);
 			ge.setGenerateDataDictionary(this.getGeDictionary());
 			ge.generate();
@@ -348,6 +349,7 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 	private String modelOutDir = null;
 	private String baseModelPackage = null;
 	private String baseModelOutDir = null;
+	private Boolean geDao = null;
 	
 	private boolean getGeDictionary() {
 		this.loadPropertyFile();
@@ -368,6 +370,14 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 			this.baseModelPackage = this.getProperty("ge.base.model.package");
 		}
 		return this.baseModelPackage;
+	}
+	
+	private boolean getGeDao() {
+		this.loadPropertyFile();
+		if (this.geDao == null) {
+			this.geDao = this.getPropertyToBoolean("ge.model.dao", Boolean.TRUE);
+		}
+		return this.geDao.booleanValue();
 	}
 	
 	private String getModelOutDir() {
