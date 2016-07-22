@@ -338,7 +338,6 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 				mapping.invoke(clazz, arp);
 			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException
 					| IllegalArgumentException | InvocationTargetException e) {
-				e.printStackTrace();
 				throw (new RuntimeException(String.valueOf(e)));
 			}
 		}
