@@ -25,6 +25,13 @@ import com.jfinal.plugin.activerecord.generator.TableMeta;
 public class ModelGeneratorExt extends ModelGenerator {
 	
 	protected String tableTemplate = "\tpublic static final String table = \"%s\";%n";
+	
+	// generate dao
+	private boolean geDao = true;
+	
+	public void setGeDao(boolean geDao) {
+		this.geDao = geDao;
+	}
 
 	/**
 	 * @param modelPackageName
@@ -37,6 +44,9 @@ public class ModelGeneratorExt extends ModelGenerator {
 
 	@Override
 	protected void genDao(TableMeta tableMeta, StringBuilder ret) {
+		if (!geDao) {
+			return;
+		}
 		super.genDao(tableMeta, ret);
 		ret.append(String.format(tableTemplate, tableMeta.name));
 	}

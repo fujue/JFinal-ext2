@@ -23,12 +23,14 @@ db.showsql = true
 #---------------------------------------------------------------------------------#
 # Generator Config
 # 1. ge.dict: true, generate the data dict;
+# 2. ge.model.dao: true, generate the service dao
 # 2. ge.base.model.outdir: the basemodel output dir path;
 # 3. ge.base.model.package: the basemodel package;
 # 4. ge.model.outdir: the model output dir path;
 # 5. ge.model.package: the model package;
 #---------------------------------------------------------------------------------#
 ge.dict=true
+ge.model.dao=true
 ge.base.model.outdir=
 ge.base.model.package=
 ge.model.outdir=
