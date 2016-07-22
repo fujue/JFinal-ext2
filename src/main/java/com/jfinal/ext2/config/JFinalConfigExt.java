@@ -52,7 +52,7 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 	private final static String cfg = "cfg.txt";
 	
 	public static String APP_NAME = null;
-	protected boolean geRuned = true;
+	protected boolean geRuned = false;
 	
 	/**
 	 * Config other More constant
@@ -308,7 +308,7 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 		wall.setDbType(ds);
 		dp.addFilter(wall);
 		
-		if (!this.geRuned) {
+		if (this.geRuned) {
 			dp.start();
 			BaseModelGenerator baseGe = new BaseModelGenerator(this.getBaseModelPackage(), this.getBaseModelOutDir());
 			ModelGeneratorExt modelGe = new ModelGeneratorExt(this.getModelPackage(), this.getBaseModelPackage(), this.getModelOutDir());
@@ -329,17 +329,17 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 		this.loadPropertyFile();
 		ActiveRecordPlugin arp = new ActiveRecordPlugin(ds, dp);
 		arp.setShowSql(this.getPropertyToBoolean("db.showsql"));
+
 		// mapping
-		try {
-			Class<?> clazz = Class.forName(this.getModelPackage()+"._MappingKit");
-			Method mapping = clazz.getMethod("mapping", ActiveRecordPlugin.class);
-			mapping.invoke(clazz, arp);
-		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
+		if (!this.geRuned) {
 			try {
-				throw e;
-			} catch (Exception e1) {
-				throw (new RuntimeException(String.valueOf(e1)));
+				Class<?> clazz = Class.forName(this.getModelPackage()+"._MappingKit");
+				Method mapping = clazz.getMethod("mapping", ActiveRecordPlugin.class);
+				mapping.invoke(clazz, arp);
+			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException
+					| IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
+				throw (new RuntimeException(String.valueOf(e)));
 			}
 		}
 		return arp;
