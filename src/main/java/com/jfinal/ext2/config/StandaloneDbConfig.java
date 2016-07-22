@@ -43,7 +43,7 @@ public class StandaloneDbConfig {
 	 */
 	public static void start() {
 		if (StandaloneDbConfig.instance == null) {
-			StandaloneDbConfig.instance = new StandaloneDbConfig(true);
+			StandaloneDbConfig.instance = new StandaloneDbConfig(false);
 		}
 	}
 	
@@ -52,7 +52,7 @@ public class StandaloneDbConfig {
 	 */
 	public static void startGe() {
 		if (StandaloneDbConfig.instance == null) {
-			StandaloneDbConfig.instance = new StandaloneDbConfig(false);
+			StandaloneDbConfig.instance = new StandaloneDbConfig(true);
 		}
 	}
 	
