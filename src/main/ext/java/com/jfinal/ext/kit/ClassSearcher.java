@@ -65,7 +65,7 @@ public class ClassSearcher {
      * @param baseDirName    查找的文件夹路径
      * @param targetFileName 需要查找的文件名
      */
-    private static List<String> findFiles(String baseDirName, String targetFileName) {
+    private  List<String> findFiles(String baseDirName, String targetFileName) {
         /**
          * 算法简述： 从某个给定的需查找的文件夹出发，搜索该文件夹的所有子文件夹及文件， 若为文件，则进行匹配，匹配成功则加入结果集，若为子文件夹，则进队列。 队列不空，重复上述操作，队列为空，程序结束，返回结果。
          */
@@ -82,7 +82,7 @@ public class ClassSearcher {
                 } else {
                     if (wildcardMatch(targetFileName, file.getName())) {
                         String fileName = file.getAbsolutePath();
-                        String open = PathKit.getRootClassPath() + File.separator;
+                        String open = classpath + File.separator;
                         String close = ".class";
                         int start = fileName.indexOf(open);
                         int end = fileName.indexOf(close, start + open.length());

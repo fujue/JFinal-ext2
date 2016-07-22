@@ -221,14 +221,12 @@ db.mysql.maxactive = 100 //数据库连接池最大激活数,命名规范->db.�
 db.showsql = true //是否显示 sql
 #-----------------------------------------------------------------#
 # Generator Config
-# 1. ge.run: true, generate the model and basemmodels;//是否自动生成 BaseModel和 Model;
-# 2. ge.dict: true, generate the data dict;//是否生成数据词典;
-# 3. ge.base.model.outdir: the basemodel output dir path;//BaseModel 导出目录,可为绝对路径,也可以为相对路径;
-# 4. ge.base.model.package: the basemodel package;//BaseModel的包名;
-# 5. ge.model.outdir: the model output dir path;//Model导出目录,可为绝对路径,也可以为相对路径;
-# 6. ge.model.package: the model package;//Model 的包名;
+# 1. ge.dict: true, generate the data dict;//是否生成数据词典;
+# 2. ge.base.model.outdir: the basemodel output dir path;//BaseModel 导出目录,可为绝对路径,也可以为相对路径;
+# 3. ge.base.model.package: the basemodel package;//BaseModel的包名;
+# 4. ge.model.outdir: the model output dir path;//Model导出目录,可为绝对路径,也可以为相对路径;
+# 5. ge.model.package: the model package;//Model 的包名;
 #-----------------------------------------------------------------#
-ge.run=true
 ge.dict=true
 ge.base.model.outdir=
 ge.base.model.package=
