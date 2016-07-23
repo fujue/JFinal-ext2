@@ -25,6 +25,9 @@ db.showsql = true
 # ->. ge.dict: true, generate the data dict;
 # ->. ge.model.dao: true, generate the model instance;
 # ->. ge.model.table: true, generate the db table's name;
+# ->. ge.mappingarpkit: true, generate arp mappingkit; 
+# ->. ge.tablemapping: true, generate table and class mapping;
+# ->. ge.mappingkit.classname: set mappingkit class name, default `_MappingKit`;
 # ->. ge.base.model.outdir: the basemodel output dir path;
 # ->. ge.base.model.package: the basemodel package;
 # ->. ge.model.outdir: the model output dir path;
@@ -33,6 +36,9 @@ db.showsql = true
 ge.dict=true
 ge.model.dao=true
 ge.model.table=true
+ge.mappingarpkit=true
+ge.tablemapping=true
+ge.mappingkit.classname=_MappingKit
 ge.base.model.outdir=
 ge.base.model.package=
 ge.model.outdir=
@@ -48,4 +54,4 @@ app.dev = true
 app.uploads.basedir = /var/uploads
 app.downloads.basedir = /var/downloads
 app.post = true
-app.name = ss
+app.name = 

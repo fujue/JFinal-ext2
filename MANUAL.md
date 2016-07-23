@@ -224,6 +224,9 @@ db.showsql = true //是否显示 sql
 # ->. ge.dict: true, generate the data dict;//是否生成数据词典;
 # ->. ge.model.dao: true, generate the model instance;//是否生成 Model dao 实例;
 # ->. ge.model.table: true, generate the db table's name;//是否生成 table 名;
+# ->. ge.tablemapping: true, generate table and class mapping;
+# ->. ge.mappingarpkit: true, generate arp mappingkit; //是否生成arp mapping kit;
+# ->. ge.mappingkit.classname: set mappingkit class name, default `_MappingKit`;//生成 arp maping kit 的类名，默认 _MappingKit;
 # ->. ge.base.model.outdir: the basemodel output dir path;//BaseModel 导出目录,可为绝对路径,也可以为相对路径;
 # ->. ge.base.model.package: the basemodel package;//BaseModel的包名;
 # ->. ge.model.outdir: the model output dir path;//Model导出目录,可为绝对路径,也可以为相对路径;
@@ -232,6 +235,9 @@ db.showsql = true //是否显示 sql
 ge.dict=true
 ge.model.dao=true
 ge.model.table=true
+ge.mappingarpkit=true
+ge.tablemapping=true
+ge.mappingkit.classname=_MappingKit
 ge.base.model.outdir=
 ge.base.model.package=
 ge.model.outdir=

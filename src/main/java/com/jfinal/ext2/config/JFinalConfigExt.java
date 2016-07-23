@@ -32,6 +32,7 @@ import com.jfinal.ext2.handler.ActionExtentionHandler;
 import com.jfinal.ext2.interceptor.NotFoundActionInterceptor;
 import com.jfinal.ext2.interceptor.OnExceptionInterceptorExt;
 import com.jfinal.ext2.kit.PageViewKit;
+import com.jfinal.ext2.plugin.activerecord.generator.MappingKitGeneratorExt;
 import com.jfinal.ext2.plugin.activerecord.generator.ModelGeneratorExt;
 import com.jfinal.ext2.plugin.druid.DruidEncryptPlugin;
 import com.jfinal.ext2.upload.filerenamepolicy.RandomFileRenamePolicy;
@@ -190,7 +191,7 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 	
 	private boolean getHttpPostMethod() {
 		this.loadPropertyFile();
-		return this.getPropertyToBoolean("app.post",false);
+		return this.getPropertyToBoolean("app.post", false);
 	}
 
 	private String getPath(String property) {
@@ -247,7 +248,7 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 	 */
 	private String getAppName() {
 		this.loadPropertyFile();
-		String appName = this.getProperty("app.name","");
+		String appName = this.getProperty("app.name", "");
 		if (StrKit.isBlank(appName)) {
 			throw new IllegalArgumentException("Please Set Your App Name in Your cfg file");
 		}
@@ -276,7 +277,7 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 	 */
 	private String[] getDataSource() {
 		this.loadPropertyFile();
-		String ds = this.getProperty("db.ds");
+		String ds = this.getProperty("db.ds", "");
 		if (StrKit.isBlank(ds)) {
 			return (new String[0]);
 		}
@@ -316,6 +317,13 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 			modelGe.setGenerateDaoInModel(this.getGeDaoInModel());
 			modelGe.setGenerateTableNameInModel(this.getGeTableNameInModel());
 			Generator ge = new Generator(dp.getDataSource(), baseGe, modelGe);
+			MappingKitGeneratorExt mappingKitGe = new MappingKitGeneratorExt(this.getModelPackage(), this.getModelOutDir());
+			if (!JFinalConfigExt.DEFAULT_MAPPINGKIT_CLASS_NAME.equals(this.getMappingKitClassName())) {
+				mappingKitGe.setMappingKitClassName(this.getMappingKitClassName());
+			}
+			mappingKitGe.setGenerateMappingArpKit(this.getGeMappingArpKit());
+			mappingKitGe.setGenerateTableMapping(this.getGeTableMapping());
+			ge.setMappingKitGenerator(mappingKitGe);
 			ge.setGenerateDataDictionary(this.getGeDictionary());
 			ge.generate();
 		}
@@ -336,12 +344,12 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 		// mapping
 		if (!this.geRuned) {
 			try {
-				Class<?> clazz = Class.forName(this.getModelPackage()+"._MappingKit");
+				Class<?> clazz = Class.forName(this.getModelPackage()+"."+this.getMappingKitClassName());
 				Method mapping = clazz.getMethod("mapping", ActiveRecordPlugin.class);
 				mapping.invoke(clazz, arp);
 			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException
 					| IllegalArgumentException | InvocationTargetException e) {
-				throw (new RuntimeException(String.valueOf(e)));
+				throw (new RuntimeException(String.valueOf(e) + ",may be your table is not contain `PrimaryKey`."));
 			}
 		}
 		return arp;
@@ -357,12 +365,12 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 	
 	private String getBaseModelOutDir() {
 		this.loadPropertyFile();
-		return this.getProperty("ge.base.model.outdir","");
+		return this.getProperty("ge.base.model.outdir");
 	}
 	
 	private String getBaseModelPackage() {
 		this.loadPropertyFile();
-		return this.getProperty("ge.base.model.package","");
+		return this.getProperty("ge.base.model.package");
 	}
 	
 	private boolean getGeDaoInModel() {
@@ -383,12 +391,32 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 	
 	private String getModelOutDir() {
 		this.loadPropertyFile();
-		return this.getProperty("ge.model.outdir","");
+		return this.getProperty("ge.model.outdir");
 	}
 	
 	private String getModelPackage() {
 		this.loadPropertyFile();
 		return this.getProperty("ge.model.package");
+	}
+	
+	private static final String DEFAULT_MAPPINGKIT_CLASS_NAME = "_MappingKit";
+	private String mappingKitClassName = null;
+	private String getMappingKitClassName() {
+		this.loadPropertyFile();
+		if (this.mappingKitClassName == null) {
+			this.mappingKitClassName = this.getProperty("ge.mappingkit.classname", JFinalConfigExt.DEFAULT_MAPPINGKIT_CLASS_NAME);
+		}
+		return this.mappingKitClassName;
+	}
+	
+	private boolean getGeMappingArpKit() {
+		this.loadPropertyFile();
+		return this.getPropertyToBoolean("ge.mappingarpkit", true);
+	}
+	
+	private boolean getGeTableMapping() {
+		this.loadPropertyFile();
+		return this.getPropertyToBoolean("ge.tablemapping", true);
 	}
 
 	//=========== Override

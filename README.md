@@ -1,5 +1,9 @@
 # JFinal-ext2
 
+#####v2.0.7 更新内容
+1. 自定义 MappingKitGenerateor[Ext],可以配置是否生成 arp mapping,自定义 mappingkitclassname;
+2. 可配置在MappingKitGenerateorExt 中生成 class 与 tablename 的 mapping;
+
 #####v2.0.6 更新内容
 1. 修改 Ge 数据库 Model 的 bug;
 
