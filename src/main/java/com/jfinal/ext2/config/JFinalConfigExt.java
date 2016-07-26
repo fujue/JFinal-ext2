@@ -32,14 +32,14 @@ import com.jfinal.ext2.handler.ActionExtentionHandler;
 import com.jfinal.ext2.interceptor.NotFoundActionInterceptor;
 import com.jfinal.ext2.interceptor.OnExceptionInterceptorExt;
 import com.jfinal.ext2.kit.PageViewKit;
+import com.jfinal.ext2.plugin.activerecord.generator.BaseModelGeneratorExt;
 import com.jfinal.ext2.plugin.activerecord.generator.MappingKitGeneratorExt;
-import com.jfinal.ext2.plugin.activerecord.generator.ModelGeneratorExt;
 import com.jfinal.ext2.plugin.druid.DruidEncryptPlugin;
 import com.jfinal.ext2.upload.filerenamepolicy.RandomFileRenamePolicy;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
-import com.jfinal.plugin.activerecord.generator.BaseModelGenerator;
 import com.jfinal.plugin.activerecord.generator.Generator;
+import com.jfinal.plugin.activerecord.generator.ModelGenerator;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.render.ViewType;
 import com.jfinal.upload.OreillyCos;
@@ -312,10 +312,10 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 		
 		if (this.geRuned) {
 			dp.start();
-			BaseModelGenerator baseGe = new BaseModelGenerator(this.getBaseModelPackage(), this.getBaseModelOutDir());
-			ModelGeneratorExt modelGe = new ModelGeneratorExt(this.getModelPackage(), this.getBaseModelPackage(), this.getModelOutDir());
+			BaseModelGeneratorExt baseGe = new BaseModelGeneratorExt(this.getBaseModelPackage(), this.getBaseModelOutDir());
+			baseGe.setGenerateTableNameInModel(this.getGeTableNameInModel());
+			ModelGenerator modelGe = new ModelGenerator(this.getModelPackage(), this.getBaseModelPackage(), this.getModelOutDir());
 			modelGe.setGenerateDaoInModel(this.getGeDaoInModel());
-			modelGe.setGenerateTableNameInModel(this.getGeTableNameInModel());
 			Generator ge = new Generator(dp.getDataSource(), baseGe, modelGe);
 			MappingKitGeneratorExt mappingKitGe = new MappingKitGeneratorExt(this.getModelPackage(), this.getModelOutDir());
 			if (!JFinalConfigExt.DEFAULT_MAPPINGKIT_CLASS_NAME.equals(this.getMappingKitClassName())) {
