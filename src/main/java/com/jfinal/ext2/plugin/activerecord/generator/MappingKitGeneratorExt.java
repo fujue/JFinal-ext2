@@ -32,19 +32,28 @@ public class MappingKitGeneratorExt extends MappingKitGenerator {
 	protected String tableMappingPutTableTemplate =
 			"\tpublic void putTable(Class<? extends Model<?>> modelClass, String tableName) {%n"
 			+"\t\tthis.modelToTableMap.put(modelClass, tableName);\n"
+			+ "\t}\n"
+			+"\tpublic void putTable(String tableName, Class<? extends Model<?>> modelClass) {%n"
+			+"\t\tthis.tableToModelMap.put(tableName, modelClass);\n"
 			+ "\t}\n";
 	protected String tableMappingGetTableTemplate =
 			"\n\tpublic String getTableName(Class<? extends Model<?>> modelClass) {%n"
 			+ "\t\tif (!this.modelToTableMap.containsKey(modelClass)) {"
 			+ "\n\t\t\treturn \"\";\n\t\t}\n\t\t"
-			+ "return this.modelToTableMap.get(modelClass);\n\t}\n";
+			+ "return this.modelToTableMap.get(modelClass);\n\t}\n"
+			+"\n\tpublic Class<? extends Model<?>> getModelClass(String tableName) {%n"
+			+ "\t\tif (!this.tableToModelMap.containsKey(tableName)) {"
+			+ "\n\t\t\treturn null;\n\t\t}\n\t\t"
+			+ "return this.tableToModelMap.get(tableName);\n\t}\n";
 	protected String tableMappingTemplate = 
 			"\tprivate final Map<Class<? extends Model<?>>, String> modelToTableMap = new HashMap<Class<? extends Model<?>>, String>();\n"
+			+"\tprivate final Map<String, Class<? extends Model<?>>> tableToModelMap = new HashMap<String, Class<? extends Model<?>>>();\n"
 			+ "\tprivate static %s me = new %s();\n\n";
 	protected String tableMappingMethodTemplate = "\tpublic static %s me() {\n"+
 													"\t\treturn me;\n\t}\n\n";
 	protected String tableMappingMethodContentTemplate =
-				"\t\tthis.modelToTableMap.put(%s.class, \"%s\");%n";
+				"\t\tthis.modelToTableMap.put(%s.class, \"%s\");%n"
+				+"\t\tthis.tableToModelMap.put(\"%s\", %s.class);%n";;
 	
 	public MappingKitGeneratorExt(String mappingKitPackageName,
 			String mappingKitOutputDir) {
@@ -106,7 +115,7 @@ public class MappingKitGeneratorExt extends MappingKitGenerator {
 			//init
 			ret.append(String.format("\n\tprivate %s() {\n", this.mappingKitClassName));
 			for (TableMeta tableMeta : tableMetas) {
-				ret.append(String.format(tableMappingMethodContentTemplate, tableMeta.modelName, tableMeta.name));
+				ret.append(String.format(tableMappingMethodContentTemplate, tableMeta.modelName, tableMeta.name, tableMeta.name, tableMeta.modelName));
 			}
 			ret.append("\t}\n");
 		}
