@@ -31,6 +31,8 @@ public class BaseModelGeneratorExt extends BaseModelGenerator {
 
 	private List<String> columns = new ArrayList<String>();
 
+	private List<String> modelClass = new ArrayList<String>();
+
 	protected String baseModelClassName = null;
 	protected String tablename = null;
 
@@ -38,6 +40,11 @@ public class BaseModelGeneratorExt extends BaseModelGenerator {
 
 	// generate tablename in model
 	private boolean generateTableNameInModel = true;
+	
+	// generate table column name in model
+	private boolean generateTableColumnNameInModel = true;
+	
+	protected String tableColumnNameTemplate = "\tpublic static final String %s = \"%s\";\n\n";
 
 	public BaseModelGeneratorExt(String baseModelPackageName, String baseModelOutputDir) {
 		super(baseModelPackageName, baseModelOutputDir);
@@ -51,6 +58,14 @@ public class BaseModelGeneratorExt extends BaseModelGenerator {
 	public void setGenerateTableNameInModel(boolean generateTableNameInModel) {
 		this.generateTableNameInModel = generateTableNameInModel;
 	}
+	
+	/**
+	 * Generate table column name in model
+	 * @param generateTableColumnNameInModel
+	 */
+	public void setGenerateTableColumnNameInModel(boolean generateTableColumnNameInModel) {
+		this.generateTableColumnNameInModel = generateTableColumnNameInModel;
+	}
 
 	@Override
 	protected void genBaseModelContent(TableMeta tableMeta) {
@@ -61,9 +76,14 @@ public class BaseModelGeneratorExt extends BaseModelGenerator {
 
 	@Override
 	protected void genSetMethodName(ColumnMeta columnMeta, StringBuilder ret) {
-		if (!this.columns.contains(this.baseModelClassName) && this.generateTableNameInModel) {
-			this.columns.add(this.baseModelClassName);
+		if (!this.modelClass.contains(this.baseModelClassName) && this.generateTableNameInModel) {
+			this.modelClass.add(this.baseModelClassName);
 			ret.append(String.format(tableTemplate, this.tablename));
+		}
+		if (this.generateTableColumnNameInModel && !this.columns.contains(columnMeta.name)) {
+			this.columns.add(columnMeta.name);
+			//add column name
+			ret.append(String.format(this.tableColumnNameTemplate, columnMeta.name.toUpperCase(), columnMeta.name));
 		}
 		super.genSetMethodName(columnMeta, ret);
 	}

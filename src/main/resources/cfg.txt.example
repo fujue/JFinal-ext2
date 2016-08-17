@@ -25,6 +25,7 @@ db.showsql = true
 # ->. ge.dict: true, generate the data dict;
 # ->. ge.model.dao: true, generate the model instance;
 # ->. ge.model.table: true, generate the db table's name;
+# ->. ge.model.tablecolumn: true, generate the db table's column name;
 # ->. ge.mappingarpkit: true, generate arp mappingkit; 
 # ->. ge.tablemapping: true, generate table and class mapping;
 # ->. ge.mappingkit.classname: set mappingkit class name, default `_MappingKit`;
@@ -36,6 +37,7 @@ db.showsql = true
 ge.dict=true
 ge.model.dao=true
 ge.model.table=true
+ge.model.tablecolumn=true
 ge.mappingarpkit=true
 ge.tablemapping=true
 ge.mappingkit.classname=_MappingKit

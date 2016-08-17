@@ -314,6 +314,7 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 			dp.start();
 			BaseModelGeneratorExt baseGe = new BaseModelGeneratorExt(this.getBaseModelPackage(), this.getBaseModelOutDir());
 			baseGe.setGenerateTableNameInModel(this.getGeTableNameInModel());
+			baseGe.setGenerateTableColumnNameInModel(this.getGeTableColumnName());
 			ModelGenerator modelGe = new ModelGenerator(this.getModelPackage(), this.getBaseModelPackage(), this.getModelOutDir());
 			modelGe.setGenerateDaoInModel(this.getGeDaoInModel());
 			Generator ge = new Generator(dp.getDataSource(), baseGe, modelGe);
@@ -417,6 +418,11 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 	private boolean getGeTableMapping() {
 		this.loadPropertyFile();
 		return this.getPropertyToBoolean("ge.tablemapping", true);
+	}
+	
+	private boolean getGeTableColumnName() {
+		this.loadPropertyFile();
+		return this.getPropertyToBoolean("ge.model.tablecolumn", true);
 	}
 
 	//=========== Override
