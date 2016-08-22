@@ -80,8 +80,8 @@ public class BaseModelGeneratorExt extends BaseModelGenerator {
 			this.modelClass.add(this.baseModelClassName);
 			ret.append(String.format(tableTemplate, this.tablename));
 		}
-		if (this.generateTableColumnNameInModel && !this.columns.contains(columnMeta.name)) {
-			this.columns.add(columnMeta.name);
+		if (this.generateTableColumnNameInModel && !this.columns.contains(this.tablename+columnMeta.name)) {
+			this.columns.add(this.tablename+columnMeta.name);
 			//add column name
 			ret.append(String.format(this.tableColumnNameTemplate, columnMeta.name.toUpperCase(), columnMeta.name));
 		}
