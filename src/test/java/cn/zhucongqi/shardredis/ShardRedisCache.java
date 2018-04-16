@@ -42,7 +42,7 @@ public class ShardRedisCache {
 		
 		cache.hmset("map1", map);
 		
-		System.out.println(cache.get("zcq1"));
+		System.out.println("");;
 		
 		System.out.println(cache.hvals("map1"));
 	}

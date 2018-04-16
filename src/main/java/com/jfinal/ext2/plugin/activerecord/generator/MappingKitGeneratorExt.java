@@ -30,24 +30,24 @@ public class MappingKitGeneratorExt extends MappingKitGenerator {
 	private boolean generateTableMapping = true;
 	
 	protected String tableMappingPutTableTemplate =
-			"\tpublic void putTable(Class<? extends Model<?>> modelClass, String tableName) {%n"
+            "\tpublic void putTable(Class<? extends %s<?>> modelClass, String tableName) {%n"
 			+"\t\tthis.modelToTableMap.put(modelClass, tableName);\n"
 			+ "\t}\n"
-			+"\tpublic void putTable(String tableName, Class<? extends Model<?>> modelClass) {%n"
+                    + "\tpublic void putTable(String tableName, Class<? extends %s<?>> modelClass) {%n"
 			+"\t\tthis.tableToModelMap.put(tableName, modelClass);\n"
 			+ "\t}\n";
 	protected String tableMappingGetTableTemplate =
-			"\n\tpublic String getTableName(Class<? extends Model<?>> modelClass) {%n"
+            "\n\tpublic String getTableName(Class<? extends %s<?>> modelClass) {%n"
 			+ "\t\tif (!this.modelToTableMap.containsKey(modelClass)) {"
 			+ "\n\t\t\treturn \"\";\n\t\t}\n\t\t"
 			+ "return this.modelToTableMap.get(modelClass);\n\t}\n"
-			+"\n\tpublic Class<? extends Model<?>> getModelClass(String tableName) {%n"
+                    + "\n\tpublic Class<? extends %s<?>> getModelClass(String tableName) {%n"
 			+ "\t\tif (!this.tableToModelMap.containsKey(tableName)) {"
 			+ "\n\t\t\treturn null;\n\t\t}\n\t\t"
 			+ "return this.tableToModelMap.get(tableName);\n\t}\n";
 	protected String tableMappingTemplate = 
-			"\tprivate final Map<Class<? extends Model<?>>, String> modelToTableMap = new HashMap<Class<? extends Model<?>>, String>();\n"
-			+"\tprivate final Map<String, Class<? extends Model<?>>> tableToModelMap = new HashMap<String, Class<? extends Model<?>>>();\n"
+            "\tprivate final Map<Class<? extends %s<?>>, String> modelToTableMap = new HashMap<Class<? extends %s<?>>, String>();\n"
+                    + "\tprivate final Map<String, Class<? extends %s<?>>> tableToModelMap = new HashMap<String, Class<? extends %s<?>>>();\n"
 			+ "\tprivate static %s me = new %s();\n\n";
 	protected String tableMappingMethodTemplate = "\tpublic static %s me() {\n"+
 													"\t\treturn me;\n\t}\n\n";
@@ -55,6 +55,12 @@ public class MappingKitGeneratorExt extends MappingKitGenerator {
 				"\t\tthis.modelToTableMap.put(%s.class, \"%s\");%n"
 				+"\t\tthis.tableToModelMap.put(\"%s\", %s.class);%n";;
 	
+    /**
+     * @author yadong 用于指定扩展的Model 全类名称
+     */
+    protected String extModelPackage;
+    protected String extModel;
+
 	public MappingKitGeneratorExt(String mappingKitPackageName,
 			String mappingKitOutputDir) {
 		super(mappingKitPackageName, mappingKitOutputDir);
@@ -72,7 +78,16 @@ public class MappingKitGeneratorExt extends MappingKitGenerator {
 		this.generateTableMapping = generateTableMapping;
 	}
 	
-	@Override
+    public void setExtModelPackage(String extModelPackage) {
+
+        if (null == extModelPackage || extModelPackage.length() == 0) {
+            extModelPackage = "com.jfinal.plugin.activerecord.Model";
+        }
+        this.extModel = extModelPackage.substring(extModelPackage.lastIndexOf(".") + 1);
+        this.extModelPackage = extModelPackage;
+    }
+
+    @Override
 	protected void genClassDefine(StringBuilder ret) {
 		if (this.generateTableMapping) {
 			this.classDefineTemplate =
@@ -84,7 +99,8 @@ public class MappingKitGeneratorExt extends MappingKitGenerator {
 		super.genClassDefine(ret);
 		
 		if (this.generateTableMapping) {
-			ret.append(String.format(tableMappingTemplate, this.mappingKitClassName, this.mappingKitClassName));
+            ret.append(String.format(tableMappingTemplate, this.extModel, this.extModel, this.extModel, this.extModel,
+                    this.mappingKitClassName, this.mappingKitClassName));
 			ret.append(String.format(tableMappingMethodTemplate, this.mappingKitClassName));
 		}
 	}
@@ -96,7 +112,8 @@ public class MappingKitGeneratorExt extends MappingKitGenerator {
 		} 
 		
 		if (this.generateTableMapping) {
-			ret.append("import java.util.*;\nimport com.jfinal.plugin.activerecord.Model;\n\n");
+            ret.append("import java.util.*;");
+            ret.append("\nimport ").append(extModelPackage).append(";\n\n");
 		}
 	}
 
@@ -109,8 +126,8 @@ public class MappingKitGeneratorExt extends MappingKitGenerator {
 		}
 		
 		if (this.generateTableMapping) {
-			ret.append(String.format(tableMappingPutTableTemplate));
-			ret.append(String.format(tableMappingGetTableTemplate));
+            ret.append(String.format(tableMappingPutTableTemplate, this.extModel, this.extModel));
+            ret.append(String.format(tableMappingGetTableTemplate, this.extModel, this.extModel));
 			
 			//init
 			ret.append(String.format("\n\tprivate %s() {\n", this.mappingKitClassName));

@@ -315,6 +315,8 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 			BaseModelGeneratorExt baseGe = new BaseModelGeneratorExt(this.getBaseModelPackage(), this.getBaseModelOutDir());
 			baseGe.setGenerateTableNameInModel(this.getGeTableNameInModel());
 			baseGe.setGenerateTableColumnNameInModel(this.getGeTableColumnName());
+            baseGe.setExtModelPackage(this.getExtModelPackage());
+            baseGe.setExtIBeanPackage(this.getExtIBeanPackage());
 			ModelGenerator modelGe = new ModelGenerator(this.getModelPackage(), this.getBaseModelPackage(), this.getModelOutDir());
 			modelGe.setGenerateDaoInModel(this.getGeDaoInModel());
 			Generator ge = new Generator(dp.getDataSource(), baseGe, modelGe);
@@ -322,6 +324,7 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 			if (!JFinalConfigExt.DEFAULT_MAPPINGKIT_CLASS_NAME.equals(this.getMappingKitClassName())) {
 				mappingKitGe.setMappingKitClassName(this.getMappingKitClassName());
 			}
+            mappingKitGe.setExtModelPackage(this.getExtModelPackage());
 			mappingKitGe.setGenerateMappingArpKit(this.getGeMappingArpKit());
 			mappingKitGe.setGenerateTableMapping(this.getGeTableMapping());
 			ge.setMappingKitGenerator(mappingKitGe);
@@ -424,6 +427,16 @@ public abstract class JFinalConfigExt extends com.jfinal.config.JFinalConfig {
 		this.loadPropertyFile();
 		return this.getPropertyToBoolean("ge.model.tablecolumn", true);
 	}
+
+    private String getExtModelPackage() {
+        this.loadPropertyFile();
+        return this.getProperty("ge.model.extmodelpackage");
+    }
+
+    private String getExtIBeanPackage() {
+        this.loadPropertyFile();
+        return this.getProperty("ge.model.extibeanpackage");
+    }
 
 	//=========== Override
 	
