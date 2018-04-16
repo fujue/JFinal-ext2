@@ -22,14 +22,7 @@ public class TestExt {
     public static void main(String args[]) {
 
         StandaloneDbConfig.startGe();
-        //        testStr();
 
     }
 
-    public static void testStr() {
-
-        String str = "import com.jfinal.plugin.activerecord.IBean";
-
-        System.out.println(str.substring(str.lastIndexOf(".") + 1));
-    }
 }
