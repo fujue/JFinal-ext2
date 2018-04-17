@@ -113,7 +113,12 @@ public class MappingKitGeneratorExt extends MappingKitGenerator {
 		
 		if (this.generateTableMapping) {
             ret.append("import java.util.*;");
-            ret.append("\nimport ").append(extModelPackage).append(";\n\n");
+            if (null != extModelPackage) {
+                if (!extModelPackage.startsWith("import")) {
+                    ret.append("\nimport ");
+                }
+                ret.append(extModelPackage).append(";\n\n");
+            }
 		}
 	}
 

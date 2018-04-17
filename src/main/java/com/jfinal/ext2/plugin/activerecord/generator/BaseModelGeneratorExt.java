@@ -119,8 +119,20 @@ public class BaseModelGeneratorExt extends BaseModelGenerator {
     protected void genImport(StringBuilder ret) {
         //	       "import com.jfinal.plugin.activerecord.Model;%n"
         //	     + "import com.jfinal.plugin.activerecord.IBean;%n%n";
-        ret.append("import ").append(this.extModelPackage).append(";\n").append("import ").append(this.extIBeanPackage)
-                .append(";\n\n");
+        if (null != this.extModelPackage) {
+            if (!this.extModelPackage.startsWith("import")) {
+                ret.append("import ");
+            } 
+            ret.append(this.extModelPackage).append(";\n");
+        }
+        
+        if (null != this.extIBeanPackage) {
+            if (!this.extIBeanPackage.startsWith("import")) {
+                ret.append("import ");
+            }
+            ret.append(this.extIBeanPackage).append(";\n\n");
+        }
+        
     }
 	
     /**
