@@ -22,6 +22,7 @@ import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.ext.render.exception.ExceptionRender;
 import com.jfinal.render.RenderFactory;
+import com.jfinal.render.RenderManager;
 
 public class ExceptionInterceptor implements Interceptor {
     private ExceptionRender defaultRender;
@@ -85,7 +86,7 @@ public class ExceptionInterceptor implements Interceptor {
 
         @Override
         public void render() {
-            RenderFactory.me().getRender(view).setContext(request, response).render();
+            RenderManager.me().getRenderFactory().getRender(view).setContext(request, response).render();
         }
 
     }

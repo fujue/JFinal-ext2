@@ -34,6 +34,7 @@ import java.util.Set;
 public class PoiExporter {
 
     public static final String VERSION_2003 = "2003";
+    public static final String VERSION_2007 = "2007";
     private static final int HEADER_ROW = 1;
     private static final int MAX_ROWS = 65535;
     private String version;

@@ -8,6 +8,7 @@ import com.jfinal.core.JFinal;
 import com.jfinal.ext2.config.JFinalConfigExt;
 import com.jfinal.ext2.config.JFinalExt;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.template.Engine;
 
 /**
  * 
@@ -72,4 +73,8 @@ public class TestConfig extends JFinalConfigExt {
 		
 	}
 
+	@Override
+	public void configEngine(Engine engine) {
+
+	}
 }

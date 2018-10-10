@@ -83,11 +83,13 @@ public class ShiroPlugin implements IPlugin {
 		ConcurrentMap<String, AuthzHandler> authzMaps = new ConcurrentHashMap<String, AuthzHandler>();
 		//逐个访问所有注册的Controller，解析Controller及action上的所有Shiro注解。
 		//并依据这些注解，actionKey提前构建好权限检查处理器。
-		for (Entry<String, Class<? extends Controller>> entry : routes
-				.getEntrySet()) {
-			Class<? extends Controller> controllerClass = entry.getValue();
+		// new version
+		// rewrite by fujue 
+		List<Routes.Route> routerList = routes.getRouteItemList();
+		for (Routes.Route route : routerList) {
+			Class<? extends Controller> controllerClass = route.getControllerClass();
 
-			String controllerKey = entry.getKey();
+			String controllerKey = route.getControllerKey();
 
 			// 获取Controller的所有Shiro注解。
 			List<Annotation> controllerAnnotations = getAuthzAnnotations(controllerClass);
@@ -116,6 +118,42 @@ public class ShiroPlugin implements IPlugin {
 				}
 			}
 		}
+		// old version
+//		for (Entry<String, Class<? extends Controller>> entry : routes
+//				.getEntrySet()) {
+//
+//
+//			Class<? extends Controller> controllerClass = entry.getValue();
+//
+//			String controllerKey = entry.getKey();
+//
+//			// 获取Controller的所有Shiro注解。
+//			List<Annotation> controllerAnnotations = getAuthzAnnotations(controllerClass);
+//			// 逐个遍历方法。
+//			Method[] methods = controllerClass.getMethods();
+//			for (Method method : methods) {
+//				//排除掉Controller基类的所有方法，并且只关注没有参数的Action方法。
+//				if (!excludedMethodName.contains(method.getName())
+//						&& method.getParameterTypes().length == 0) {
+//					//若该方法上存在ClearShiro注解，则对该action不进行访问控制检查。
+//					if(isClearShiroAnnotationPresent(method)){
+//						continue;
+//					}
+//					//获取方法的所有Shiro注解。
+//					List<Annotation> methodAnnotations = getAuthzAnnotations(method);
+//					//依据Controller的注解和方法的注解来生成访问控制处理器。
+//					AuthzHandler authzHandler = createAuthzHandler(
+//							controllerAnnotations, methodAnnotations);
+//					//生成访问控制处理器成功。
+//					if (authzHandler != null) {
+//						//构建ActionKey，参考ActionMapping中实现
+//						String actionKey = createActionKey(controllerClass, method, controllerKey);
+//						//添加映射
+//						authzMaps.put(actionKey, authzHandler);
+//					}
+//				}
+//			}
+//		}
 		//注入到ShiroKit类中。ShiroKit类以单例模式运行。
 		ShiroKit.init(authzMaps);
 		return true;

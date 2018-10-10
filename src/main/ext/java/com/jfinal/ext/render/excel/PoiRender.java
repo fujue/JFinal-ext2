@@ -27,7 +27,7 @@ import com.jfinal.render.RenderException;
 public class PoiRender extends Render {
 
     protected final Log LOG = Log.getLog(getClass());
-    private final static String CONTENT_TYPE = "application/msexcel;charset=" + getEncoding();
+    private final static String CONTENT_TYPE = "application/ms-excel;charset=" + getEncoding();
     private List<?>[] data;
     private String[][] headers;
     private String[] sheetNames = new String[]{};

@@ -5,7 +5,7 @@
 	<artifactId>jfinal-ext2</artifactId>
 	<version>2.0.8-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>jfinal-ext2</name>
+	<name></name>
 	<description>jfinal-ext2</description>
 	<url>http://openingo.github.io/JFinal-ext2/</url>
 	<licenses>
@@ -18,6 +18,12 @@
 		<developer>
 			<name>BruceZCQ</name>
 			<email>zcq@zhucongqi.cn</email>
+			<organization>OpeningO Co.,Ltd.</organization>
+			<organizationUrl>http://openingo.github.io/</organizationUrl>
+		</developer>
+		<developer>
+			<name>fujue</name>
+			<email>fujue.com@gmail.com</email>
 			<organization>OpeningO Co.,Ltd.</organization>
 			<organizationUrl>http://openingo.github.io/</organizationUrl>
 		</developer>
@@ -47,7 +53,7 @@
 		<dependency>
 			<groupId>com.jfinal</groupId>
 			<artifactId>jfinal</artifactId>
-			<version>2.2</version>
+			<version>3.5</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
