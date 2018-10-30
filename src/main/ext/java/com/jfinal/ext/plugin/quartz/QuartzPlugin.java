@@ -19,12 +19,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-import org.quartz.CronTrigger;
-import org.quartz.Job;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
+import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import com.google.common.base.Throwables;
@@ -99,7 +94,7 @@ public class QuartzPlugin implements IPlugin {
                 Object temp = Reflect.on("org.quartz.TriggerBuilder").call("newTrigger").get();
                 temp = Reflect.on(temp).call("withIdentity", jobClassName, jobClassName).get();
                 temp = Reflect.on(temp).call("withSchedule",
-                        Reflect.on("org.quartz.CronScheduleBuilder").call("cronSchedule", jobCronExp).get())
+                        (CronScheduleBuilder)Reflect.on("org.quartz.CronScheduleBuilder").call("cronSchedule", jobCronExp).get())
                         .get();
                 trigger = Reflect.on(temp).call("build").get();
             }
