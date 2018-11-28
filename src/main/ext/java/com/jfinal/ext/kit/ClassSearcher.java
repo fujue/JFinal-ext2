@@ -15,15 +15,18 @@
  */
 package com.jfinal.ext.kit;
 
+import com.google.common.collect.Lists;
+import com.jfinal.kit.PathKit;
+import com.jfinal.log.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.regex.Matcher;
 
-import com.google.common.collect.Lists;
-import com.jfinal.kit.PathKit;
 import com.jfinal.log.Log;
 
 public class ClassSearcher {
@@ -86,7 +89,7 @@ public class ClassSearcher {
                         String close = ".class";
                         int start = fileName.indexOf(open);
                         int end = fileName.indexOf(close, start + open.length());
-                        String className = fileName.substring(start + open.length(), end).replace(File.separator, ".");
+                        String className = fileName.substring(start + open.length(), end).replaceAll(Matcher.quoteReplacement(File.separator), ".");
                         classFiles.add(className);
                     }
                 }
@@ -140,7 +143,7 @@ public class ClassSearcher {
             classFileList = findFiles(classpath, "*.class");
         } else {
             for (String scanPackage : scanPackages) {
-                classFileList = findFiles(classpath + File.separator + scanPackage.replaceAll("\\.", "\\" + File.separator), "*.class");
+                classFileList.addAll(findFiles(classpath + File.separator + scanPackage.replaceAll("\\.", "\\" + File.separator), "*.class"));
             }
         }
         classFileList.addAll(findjarFiles(libDir));
@@ -178,7 +181,7 @@ public class ClassSearcher {
                                     for (String scanPackage : scanPackages) {
                                         scanPackage = scanPackage.replaceAll("\\.", "\\" + File.separator);
                                         if (!jarEntry.isDirectory() && entryName.endsWith(".class") && entryName.startsWith(scanPackage)) {
-                                            String className = entryName.replaceAll(File.separator, ".").substring(0, entryName.length() - 6);
+                                            String className = entryName.replaceAll(Matcher.quoteReplacement(File.separator), ".").substring(0, entryName.length() - 6);
                                             classFiles.add(className);
                                         }
                                     }
